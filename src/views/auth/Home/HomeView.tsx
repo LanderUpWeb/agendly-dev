@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import '../Home/HomeView.css';
-import logoAgendly from '@/assets/logoNavbar.png';
+import logoAgendly from '@/assets/logo-agendly.svg';
 
 export default function Home() {
     const [menuAberto, setMenuAberto] = useState(false);

@@ -3,7 +3,7 @@ import React from 'react';
 import NavbarItens from './NavbarItens'; 
 import './Navbar.css';
 
-import logoImg from '../../assets/logoNavbar.png'; 
+import logoImg from '../../assets/logo-agendly.svg'; 
 
 const Navbar = () => {
   return (
