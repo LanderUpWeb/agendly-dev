@@ -2,7 +2,9 @@
 import axios from 'axios';
 import { toast } from 'sonner';
 
-export const BASE_URL = 'http://localhost:8080/api/v1';
+export const BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ??
+  'http://localhost:8080/api/v1';
 
 export const api = axios.create({
   baseURL: BASE_URL,
