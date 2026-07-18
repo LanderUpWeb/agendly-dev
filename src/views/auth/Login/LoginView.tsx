@@ -8,7 +8,7 @@ import { authService } from '@/services/endpoints';
 import { salvarSessao } from '@/lib/auth';
 import './LoginView.css';
 import imagemLogin from '../../../assets/login.jpg';
-import logoAgendly from '../../../assets/logoNavbar.png';
+import logoAgendly from '../../../assets/logo-agendly.svg';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
