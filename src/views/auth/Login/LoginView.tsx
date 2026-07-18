@@ -92,18 +92,91 @@ export default function LoginView() {
         <div className="login-right-side">
           <div className="login-form-wrapper">
             <h2>Bem-vindo</h2>
-            <p className="subtitulo">Entre com a sua conta Google para continuar.</p>
+            <p className="subtitulo">Entre com email e senha ou use sua conta Google.</p>
 
             {errorMessage && <div className="error-alert">{errorMessage}</div>}
+
+            <FormEmailSenha onErro={setErrorMessage} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '16px 0', color: '#888' }}>
+              <div style={{ flex: 1, height: 1, background: '#ccc' }} />
+              <span style={{ fontSize: 12 }}>ou</span>
+              <div style={{ flex: 1, height: 1, background: '#ccc' }} />
+            </div>
 
             <BotaoGoogle theme={theme} onErro={setErrorMessage} />
 
             <p className="signup-redirect" style={{ marginTop: 24 }}>
-           
+              Não tem conta? <a href="/register">Cadastre-se</a>
             </p>
           </div>
         </div>
       </div>
     </GoogleOAuthProvider>
+  );
+}
+
+function FormEmailSenha({ onErro }) {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [carregando, setCarregando] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !senha) {
+      onErro('Informe email e senha.');
+      return;
+    }
+    setCarregando(true);
+    onErro('');
+    try {
+      const dados = await authService.loginEmailSenha(email, senha);
+      salvarSessao(dados);
+      toast.success('Login efetuado!');
+      navigate({ to: '/agenda' });
+    } catch (err) {
+      onErro(err?.response?.data?.message || err?.response?.data || 'Falha no login.');
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        autoComplete="email"
+        required
+        style={{ padding: '10px 12px', borderRadius: 6, border: '1px solid #ccc' }}
+      />
+      <input
+        type="password"
+        placeholder="Senha"
+        value={senha}
+        onChange={(e) => setSenha(e.target.value)}
+        autoComplete="current-password"
+        required
+        style={{ padding: '10px 12px', borderRadius: 6, border: '1px solid #ccc' }}
+      />
+      <button
+        type="submit"
+        disabled={carregando}
+        style={{
+          padding: '10px 12px',
+          borderRadius: 6,
+          border: 'none',
+          background: '#16a34a',
+          color: '#fff',
+          cursor: carregando ? 'not-allowed' : 'pointer',
+          fontWeight: 600,
+        }}
+      >
+        {carregando ? 'Entrando...' : 'Entrar'}
+      </button>
+    </form>
   );
 }
