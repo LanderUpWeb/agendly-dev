@@ -12,4 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Inside a Lovable build, preset is force-pinned to Cloudflare (preview keeps working).
+  // Outside Lovable (e.g. Vercel CI), this override kicks in and builds a Vercel-compatible bundle.
+  nitro: { preset: "vercel" },
 });
