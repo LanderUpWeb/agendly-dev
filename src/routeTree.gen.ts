@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
-import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedListagemServicosRouteImport } from './routes/_authenticated.listagem-servicos'
@@ -31,6 +30,7 @@ import { Route as AuthenticatedCadastroCobrancistaRouteImport } from './routes/_
 import { Route as AuthenticatedCadastroClienteRouteImport } from './routes/_authenticated.cadastro-cliente'
 import { Route as AuthenticatedCadastroAreaFuncionarioRouteImport } from './routes/_authenticated.cadastro-area-funcionario'
 import { Route as AuthenticatedCadastroAreaAtuacaoRouteImport } from './routes/_authenticated.cadastro-area-atuacao'
+import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated.agenda'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -45,11 +45,6 @@ const LoginRoute = LoginRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendaRoute = AgendaRouteImport.update({
-  id: '/agenda',
-  path: '/agenda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -157,13 +152,18 @@ const AuthenticatedCadastroAreaAtuacaoRoute =
     path: '/cadastro-area-atuacao',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agenda': typeof AgendaRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -183,10 +183,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agenda': typeof AgendaRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -208,10 +208,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/agenda': typeof AgendaRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/_authenticated/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/_authenticated/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -233,10 +233,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agenda'
     | '/home'
     | '/login'
     | '/register'
+    | '/agenda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cliente'
@@ -256,10 +256,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agenda'
     | '/home'
     | '/login'
     | '/register'
+    | '/agenda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cliente'
@@ -280,10 +280,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/agenda'
     | '/home'
     | '/login'
     | '/register'
+    | '/_authenticated/agenda'
     | '/_authenticated/cadastro-area-atuacao'
     | '/_authenticated/cadastro-area-funcionario'
     | '/_authenticated/cadastro-cliente'
@@ -305,7 +305,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AgendaRoute: typeof AgendaRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -332,13 +331,6 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agenda': {
-      id: '/agenda'
-      path: '/agenda'
-      fullPath: '/agenda'
-      preLoaderRoute: typeof AgendaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -467,10 +459,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCadastroAreaAtuacaoRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/agenda': {
+      id: '/_authenticated/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedCadastroAreaAtuacaoRoute: typeof AuthenticatedCadastroAreaAtuacaoRoute
   AuthenticatedCadastroAreaFuncionarioRoute: typeof AuthenticatedCadastroAreaFuncionarioRoute
   AuthenticatedCadastroClienteRoute: typeof AuthenticatedCadastroClienteRoute
@@ -490,6 +490,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedCadastroAreaAtuacaoRoute: AuthenticatedCadastroAreaAtuacaoRoute,
   AuthenticatedCadastroAreaFuncionarioRoute:
     AuthenticatedCadastroAreaFuncionarioRoute,
@@ -520,7 +521,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AgendaRoute: AgendaRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
@@ -528,13 +528,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
