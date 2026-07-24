@@ -3,10 +3,10 @@ import React from 'react';
 import CrudNavbar from '@/components/navbar/CrudNavbar';
 import './Layout.css';
 
-export const Layout = ({ title, children, headerActions }) => {
+export const Layout = ({ title, children, headerActions, voltarPara }) => {
   return (
     <div className="layout-global-container">
-      <CrudNavbar />
+      <CrudNavbar voltarPara={voltarPara} />
 
       <div className="layout-inner">
         {(title || headerActions) && (
