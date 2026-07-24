@@ -69,7 +69,7 @@ const RegisterView = () => {
   };
 
   return (
-    <Layout title="Agendly">
+    <Layout title="Agendly" voltarPara="/">
       {/* Estilo injetado para forçar fundo preto no autofill sem depender de classes externas */}
       <style>{`
         input:-webkit-autofill,
