@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { useTheme } from '@/context/ThemeContext';
+
 import { obterUsuario, limparSessao } from '@/lib/auth';
 import logoAgendly from '@/assets/logoNavbar.png';
 import './CrudNavbar.css';

@@ -76,9 +76,7 @@ export default function LoginView() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className={`login-page-container ${classeTema}`} suppressHydrationWarning>
-        <button type="button" onClick={toggleTheme} className="theme-toggle-btn" suppressHydrationWarning>
-          {theme === 'light' ? '🌙 Modo Escuro' : '☀️ Modo Claro'}
-        </button>
+
 
         <div className="login-left-side">
           <img src={imagemLogin} alt="Bem-vindo de volta!" className="login-bg-image" />
