@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { useTheme } from '@/context/ThemeContext';
+
 import { obterUsuario, limparSessao } from '@/lib/auth';
 import logoAgendly from '@/assets/logoNavbar.png';
 import './CrudNavbar.css';
@@ -10,8 +10,7 @@ import './CrudNavbar.css';
  * Navbar superior padronizada para todos os CRUDs.
  * Mostra o nome do usuário autenticado (JWT do backend) e permite sair.
  */
-const CrudNavbar = () => {
-  const { theme, toggleTheme } = useTheme();
+const CrudNavbar = ({ voltarPara = '/agenda' } = {}) => {
   const navigate = useNavigate();
   const usuario = obterUsuario();
 
@@ -20,28 +19,20 @@ const CrudNavbar = () => {
     navigate({ to: '/login' });
   };
 
+  const labelVoltar = voltarPara === '/agenda' ? '← Agenda' : '← Voltar';
+
   return (
     <header className="crud-navbar">
       <div className="crud-navbar-esquerda">
-        <Link to="/agenda" className="crud-navbar-logo-link" aria-label="Voltar à agenda">
+        <Link to={voltarPara} className="crud-navbar-logo-link" aria-label="Voltar">
           <img src={logoAgendly} alt="Agendly" className="crud-navbar-logo" />
         </Link>
       </div>
 
       <div className="crud-navbar-direita">
-        <Link to="/agenda" className="crud-navbar-btn-link">
-          ← Agenda
+        <Link to={voltarPara} className="crud-navbar-btn-link">
+          {labelVoltar}
         </Link>
-
-        <button
-          className="crud-navbar-btn-icone"
-          onClick={toggleTheme}
-          title={theme === 'light' ? 'Mudar para tema escuro' : 'Mudar para tema claro'}
-          aria-label="Alternar tema"
-          type="button"
-        >
-          {theme === 'light' ? '🌙' : '☀️'}
-        </button>
 
         <div className="crud-navbar-perfil">
           <button
